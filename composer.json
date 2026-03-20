@@ -1,6 +1,12 @@
 {
-    "name": "sotiris/slimbot",
+    "name": "slimbot/slimbot",
     "version": "0.1.0",
+    "authors": [
+        {
+            "name": "Sotiris Pezouvanis",
+            "email": "sotospez@gmail.com"
+        }
+    ],
     "description": "Ultra-lightweight personal AI assistant in PHP",
     "type": "project",
     "license": "MIT",
