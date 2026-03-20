@@ -1,0 +1,14 @@
+/.env
+/.idea/
+/vendor/
+/composer.lock
+/workspace/.clawhub/
+/workspace/uploads/*
+/workspace/images/*
+/workspace/sessions/*
+/workspace/audio/*
+/workspace/video/*
+/workspace/files/*
+/workspace/memory/reminders/archive/*
+/workspace/reminders/*
+

@@ -1,0 +1,14 @@
+#!/usr/bin/env php
+<?php
+
+require_once __DIR__ . '/../vendor/autoload.php';
+
+use Slimbot\AgentServer;
+
+$port = 8080;
+if (isset($argv[1])) {
+    $port = (int)$argv[1];
+}
+
+$server = new AgentServer(realpath(__DIR__ . '/..'), $port);
+$server->start();
