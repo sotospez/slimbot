@@ -57,3 +57,6 @@ Slimbot is not just another chatbot. It's a personal AI agent built with PHP tha
 
 ## 📝 License
 MIT
+
+---
+*This project was **90% written by AI** (collaborating with a human developer).*
