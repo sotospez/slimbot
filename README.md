@@ -1,105 +1,55 @@
-# Slimbot
+<p align="center">
+  <img src="public/logo.png" width="120" alt="Slimbot Logo">
+  <h1 align="center">Slimbot</h1>
+  <p align="center">
+    <strong>An Autonomous, Self-Evolving AI Assistant</strong><br>
+    <em>Lightweight • Extensible • Multimodal • Multi-Provider</em>
+  </p>
+</p>
 
-Ultra-lightweight personal AI assistant written in PHP. Slimbot supports multiple LLM providers, tool calls, and a small web UI and server for chat sessions.
+#
 
-## Features
+Slimbot is not just another chatbot. It's a personal AI agent built with PHP that can **write its own skills**, manage its own long-term memory, and interact with the world through a sleek, modern interface.
 
-- Multi-provider LLM support: OpenAI, Google Gemini, Claude, and Ollama
-- Tool calling for actions like file edits, web fetch/search, and memory management
-- CLI chat, interactive mode, and a standalone server
-- Lightweight web UI (public endpoints)
-- Persistent sessions and workspace memory
+## 🚀 Key Features
 
-## Requirements
+- **🧠 Self-Writing Skills**: Can learn new behaviors and response styles by writing and auto-reloading its own `SKILL.md` files.
+- **💾 Advanced Memory System**: Categorized facts and notes that persist across sessions. Intelligent auto-loading of facts into the system prompt.
+- **🎨 Premium UI**: A stunning Glassmorphism-inspired chat interface with markdown support, code syntax highlighting, and localized labels.
+- **🔌 Multi-Provider Support**: Seamlessly switch between **OpenAI, Google Gemini, Claude**, and local **Ollama** models.
+- **🛠️ Tool Chaining**: Autonomous capability to chain multiple tools (filesystem, web search, vision) to achieve complex goals.
+- **📸 Multimodal Native**: Built-in support for DALL-E 3, Whisper (Speech-to-Text), and OpenAI TTS.
 
-- PHP >= 8.1
-- Composer
-- An LLM provider API key (unless using Ollama locally)
+## 🛠️ Setup
 
-## Setup
+1. **Install Dependencies**
+   ```bash
+   composer install
+   ```
 
-1) Install dependencies:
+2. **Configuration**
+   ```bash
+   cp .env.example .env
+   # Add your API keys and select provider
+   ```
 
-```bash
-composer install
-```
+3. **Launch Agent Server**
+   ```bash
+   php index.php server 8080
+   ```
 
-2) Create your environment file:
+4. **Launch Web UI**
+   ```bash
+   php -S 127.0.0.1:8000 -t public
+   ```
+   Open `http://127.0.0.1:8000` to start chatting!
 
-```bash
-cp .env.example .env
-```
+## 📁 Project Structure
 
-3) Configure provider settings in `.env`:
+- `src/` - Core logic, agents, and tool implementations.
+- `public/` - The modern web dashboard.
+- `workspace/` - Your agent's brain (history, memory, skills).
+- `workspace/skills/` - Custom behavioral instructions.
 
-```dotenv
-AI_PROVIDER=openai
-AI_MODEL=
-OPENAI_API_KEY=your_key_here
-GOOGLE_API_KEY=
-CLAUDE_API_KEY=
-OLLAMA_HOST=http://localhost:11434
-```
-
-## Usage
-
-### CLI (single message)
-
-```bash
-php index.php chat "Hello!"
-```
-
-### CLI (interactive session)
-
-```bash
-php index.php interactive
-```
-
-### Run the Agent server
-
-```bash
-php index.php server 8080
-```
-
-or:
-
-```bash
-php bin/slimbot-server 8080
-```
-
-### Web UI (optional)
-
-Serve the `public` folder with a local PHP server:
-
-```bash
-php -S 127.0.0.1:8000 -t public
-```
-
-Then open:
-
-- `http://127.0.0.1:8000/index.html`
-
-The web UI expects the Agent server to be running on `127.0.0.1:8080`.
-
-## Provider Notes
-
-- OpenAI, Google, and Claude support tool calling and vision inputs.
-- Ollama uses the OpenAI-compatible endpoint. Some Ollama models do not support tools; if you see a tools-related error, switch to a model that does (for example `llama3.1`).
-
-## Project Layout
-
-- `index.php` - CLI entry point
-- `bin/slimbot-server` - Dedicated server entry point
-- `public/` - Web UI and lightweight endpoints
-- `src/` - Core agent, server, providers, and tools
-- `workspace/` - Sessions, memory, uploads, and configuration docs
-
-## Troubleshooting
-
-- Missing API key errors: ensure `.env` contains the key for your selected `AI_PROVIDER`.
-- Ollama 400 errors about tools: pick a tool-capable model or disable tools at the model level.
-
-## License
-
+## 📝 License
 MIT
-
