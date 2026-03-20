@@ -3,7 +3,8 @@
   <h1 align="center">Slimbot</h1>
   <p align="center">
     <strong>An Autonomous, Self-Evolving AI Assistant</strong><br>
-    <em>Lightweight • Extensible • Multimodal • Multi-Provider</em>
+    <em>v0.1.0-beta • Lightweight • Extensible • Multimodal</em><br>
+    <img src="https://img.shields.io/badge/version-v0.1.0--beta-indigo" alt="Version">
   </p>
 </p>
 

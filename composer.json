@@ -1,5 +1,6 @@
 {
     "name": "sotiris/slimbot",
+    "version": "0.1.0",
     "description": "Ultra-lightweight personal AI assistant in PHP",
     "type": "project",
     "license": "MIT",

@@ -2,13 +2,15 @@
 
 require_once __DIR__ . '/vendor/autoload.php';
 
+const VERSION = '0.1.0-beta';
+
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Slimbot\AgentFactory;
 
-$app = new Application('slimbot', '0.1.0');
+$app = new Application('slimbot', VERSION);
 
 function sendToServer(string $message, string $sessionId = 'default', ?string $imagePath = null): ?string
 {
