@@ -12,6 +12,9 @@
 
 Slimbot is not just another chatbot. It's a personal AI agent built with PHP that can **write its own skills**, manage its own long-term memory, and interact with the world through a sleek, modern interface.
 
+> [!CAUTION]
+> **Experimental Project**: Slimbot is currently in an early development stage (**v0.1.0-beta**). It is designed for **personal, local-only testing**. It does not yet include the security features (like multi-user authentication or production-grade sandboxing) required for deployment on a public-facing server. **Doing so may expose your personal files, API keys, and conversation history.**
+
 ## 🚀 Key Features
 
 - **🧠 Self-Writing Skills**: Can learn new behaviors and response styles by writing and auto-reloading its own `SKILL.md` files.
