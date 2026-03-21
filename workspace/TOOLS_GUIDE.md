@@ -27,6 +27,7 @@ Don't just use one tool. Think about how the output of one can be the input for 
 ## Available Tools Reference
 
 - **Filesystem**: `list_files`, `write_file`, `edit_file`.
+- **System**: `exec` -> Run shell commands for builds, environment management, or any system task curl wget .
 - **Search**: `web_search`, `ddg_search`, `web_fetch`.
 - **Memory**: `manage_memory` (quick_save, facts, notes, search, reminders), `history`.
 - **Multimodal**:

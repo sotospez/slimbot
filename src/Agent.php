@@ -186,6 +186,8 @@ class Agent
     {
         $toolDefinitions = array_map(fn($t) => $t['definition'], array_values($this->tools));
 
+        $historyCount = count($this->history);
+        echo "\n\033[1;36m[Agent] Sending request to {$this->model} (History: {$historyCount} messages)...\033[0m\n";
         $result = $this->provider->chatCompletion($this->history, $toolDefinitions, $this->model);
 
         $this->lastCompletionId = $result['id'] ?? null;
@@ -197,13 +199,23 @@ class Agent
         }
         $this->history[] = $choice;
 
+        if (isset($choice['content']) && !empty($choice['content'])) {
+            echo "\033[1;32m[Agent] Response:\033[0m " . $choice['content'] . "\n";
+        }
+
         if (isset($choice['tool_calls'])) {
             foreach ($choice['tool_calls'] as $toolCall) {
                 $toolName = $toolCall['function']['name'];
                 $args = json_decode($toolCall['function']['arguments'], true);
 
+                $argsStr = json_encode($args, JSON_UNESCAPED_UNICODE);
+                echo "\033[1;33m[Agent] Tool Call:\033[0m \033[1;37m{$toolName}\033[0m (\033[0;37m{$argsStr}\033[0m)\n";
+
                 if (isset($this->tools[$toolName])) {
                     $result = call_user_func($this->tools[$toolName]['handler'], $args);
+
+                    echo "\033[1;35m[Agent] Tool Result:\033[0m " . substr(str_replace("\n", " ", (string) $result), 0, 150) . "...\n";
+
                     $this->history[] = [
                         'role' => 'tool',
                         'tool_call_id' => $toolCall['id'],

@@ -25,33 +25,30 @@ class AgentServer
         socket_bind($socket, '0.0.0.0', $this->port);
         socket_listen($socket);
 
-        echo "Agent server started on port {$this->port} (with background worker)...\n";
+        echo "\n\033[1;32m[Server] Slimbot Agent Server started on port {$this->port}\033[0m\n";
+        echo "\033[0;90mListening for connections...\033[0m\n";
 
         while (true) {
-            // Use socket_select to wait for connections with a timeout
             $read = [$socket];
             $write = null;
             $except = null;
-            $changed = socket_select($read, $write, $except, 5); // 5-second timeout
+            $changed = socket_select($read, $write, $except, 5);
 
-            // Run background tasks during every iteration (throttled internally)
             $this->worker->tick();
 
             if ($changed === false) {
-                echo "socket_select error\n";
+                echo "\033[1;31m[Server] socket_select error\033[0m\n";
                 continue;
             }
 
-            if ($changed === 0) {
-                // Timeout, no new connections — just loop back
+            if ($changed === 0)
                 continue;
-            }
 
             $client = socket_accept($socket);
             if ($client === false)
                 continue;
 
-            $input = socket_read($client, 1024 * 10); // 10KB buffer
+            $input = socket_read($client, 1024 * 10);
             if (!$input) {
                 socket_close($client);
                 continue;
@@ -60,6 +57,7 @@ class AgentServer
             $data = json_decode($input, true);
             if (!$data || !isset($data['action'])) {
                 $this->sendResponse($client, ['error' => 'Invalid request']);
+                socket_close($client);
                 continue;
             }
 
@@ -75,40 +73,41 @@ class AgentServer
         $sessionId = $data['session_id'] ?? 'default';
 
         if (!isset($this->agents[$sessionId])) {
-            echo "Initializing agent for session: $sessionId\n";
+            echo "\033[1;34m[Server] Initializing Agent for session:\033[0m \033[1;37m{$sessionId}\033[0m\n";
             $this->agents[$sessionId] = AgentFactory::create($this->projectRoot, $sessionId);
         }
 
         /** @var Agent $agent */
         $agent = $this->agents[$sessionId];
 
+        echo "\n\033[1;34m[Server] Action:\033[0m \033[1;37m{$action}\033[0m (Session: \033[1;32m{$sessionId}\033[0m)\n";
+        echo str_repeat("-", 45) . "\n";
+
         switch ($action) {
             case 'chat':
                 $message = $data['message'] ?? '';
                 $imagePath = $data['image_path'] ?? null;
+                echo "\033[1;37m[User]:\033[0m " . $message . "\n";
                 $response = $agent->chat($message, $imagePath);
                 return ['response' => $response];
 
             case 'get_history':
                 $history = array_filter($agent->getHistory(), function ($msg) {
-                    return $msg['role'] !== 'system'
-                        && $msg['role'] !== 'tool'
-                        && !empty($msg['content']);
+                    return $msg['role'] !== 'system' && $msg['role'] !== 'tool' && !empty($msg['content']);
                 });
                 return ['history' => array_values($history)];
 
             case 'new_messages':
                 $since = (int) ($data['since'] ?? 0);
                 $history = array_filter($agent->getHistory(), function ($msg) {
-                    return $msg['role'] !== 'system'
-                        && $msg['role'] !== 'tool'
-                        && !empty($msg['content']);
+                    return $msg['role'] !== 'system' && $msg['role'] !== 'tool' && !empty($msg['content']);
                 });
                 $all = array_values($history);
                 $newMessages = array_slice($all, $since);
                 return ['messages' => $newMessages, 'total' => count($all)];
 
             case 'status':
+            case 'ping':
                 return ['status' => 'ok', 'session_id' => $sessionId];
 
             default:
